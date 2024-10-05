@@ -10,6 +10,7 @@ import (
 	"math/rand"
 	"net"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -102,7 +103,8 @@ func (c *Conn) processMessage(bytesRead int, data []byte, err error) {
 }
 
 func (c *Conn) init() error {
-	addr, err := net.ResolveUnixAddr("unixgram", "/var/run/wpa_supplicant/"+c.Interface)
+
+	addr, err := net.ResolveUnixAddr("unixgram", filepath.Join(DefaultCtrlDir, c.Interface))
 	if err != nil {
 		return err
 	}
@@ -111,7 +113,7 @@ func (c *Conn) init() error {
 		c.WithLogOutput(os.Stderr)
 	}
 
-	c.lsockname = fmt.Sprintf("/tmp/wpa_ctrl_%d_%d", os.Getpid(), rand.Intn(10000))
+	c.lsockname = filepath.Join(DefaultLocalSockDir, fmt.Sprintf("tmp_wpa_ctrl_%d_%d", os.Getpid(), rand.Intn(10000)))
 	laddr, err := net.ResolveUnixAddr("unixgram", c.lsockname)
 	if err != nil {
 		return err

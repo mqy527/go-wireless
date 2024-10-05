@@ -11,6 +11,7 @@ import (
 // interfaces from the current system
 var Interfaces = InterfacesFromWPARunDir
 var DefaultCtrlDir = "/var/run/wpa_supplicant"
+var DefaultLocalSockDir = "/tmp"
 
 // DefaultInterface will return the default wireless interface, being the first
 // one returned from the Interfaces method
